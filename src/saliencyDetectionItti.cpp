@@ -66,7 +66,7 @@ void saliencyMapItti::calculateSaliencyMap(const Mat* src, Mat* dst, int scaleBa
 
 	combineFeatureMaps(scaleBase);
 
-	resize(S, *dst, src->size(), 0, 0, INTER_LINEAR);
+	cv::resize(S, *dst, src->size(), 0, 0, INTER_LINEAR);
 
 	clearBuffers();
 }
@@ -163,7 +163,7 @@ void saliencyMapItti::createIntensityFeatureMaps()
 			int s = c[scaleIndex] + delta[scaleDiffIndex];
 			Mat coarseScaleImage = gaussianPyramid_I.at(s);
 			Mat coarseScaleImageUp;
-			resize(coarseScaleImage, coarseScaleImageUp, fineScaleImageSize, 0, 0, INTER_LINEAR);
+			cv::resize(coarseScaleImage, coarseScaleImageUp, fineScaleImageSize, 0, 0, INTER_LINEAR);
 			Mat I_cs = abs(fineScaleImage -  coarseScaleImageUp);			
 			featureMaps_I.push_back(I_cs);		
 		}
@@ -199,8 +199,8 @@ void saliencyMapItti::createColorFeatureMaps()
 			Mat GRs = coarseScaleImageG - coarseScaleImageR;
 			Mat YBs = coarseScaleImageY - coarseScaleImageB;
 			Mat coarseScaleImageUpGRs, coarseScaleImageUpYBs;
-			resize(GRs, coarseScaleImageUpGRs, fineScaleImageSize, 0, 0, INTER_LINEAR);
-			resize(YBs, coarseScaleImageUpYBs, fineScaleImageSize, 0, 0, INTER_LINEAR);			
+			cv::resize(GRs, coarseScaleImageUpGRs, fineScaleImageSize, 0, 0, INTER_LINEAR);
+			cv::resize(YBs, coarseScaleImageUpYBs, fineScaleImageSize, 0, 0, INTER_LINEAR);			
 			Mat RG_cs = abs( RGc - coarseScaleImageUpGRs);
 			Mat BY_cs = abs( BYc - coarseScaleImageUpYBs);
 			
@@ -227,7 +227,8 @@ void saliencyMapItti::createOrientationFeatureMaps(int orientation)
 		IplImage src_fineScaleImage = IplImage(fineScaleImage);
 		gbr_fineScaleImage = cvCreateImage(fineScaleImage.size(),IPL_DEPTH_8U, 1);				
 		gabor->conv_img(&src_fineScaleImage,gbr_fineScaleImage,CV_GABOR_REAL);		
-		Mat src_responseImg(gbr_fineScaleImage);		
+		// Mat src_responseImg(gbr_fineScaleImage);	
+		Mat src_responseImg = cvarrToMat(gbr_fineScaleImage);
 
 		for(int scaleDiffIndex = 0; scaleDiffIndex<scaleDiff; scaleDiffIndex++)
 		{
@@ -236,10 +237,10 @@ void saliencyMapItti::createOrientationFeatureMaps(int orientation)
 			IplImage src_coarseScaleImage = IplImage(coarseScaleImage);
 			gbr_coarseScaleImage = cvCreateImage(coarseScaleImage.size(),IPL_DEPTH_8U, 1);			
 			gabor->conv_img(&src_coarseScaleImage,gbr_coarseScaleImage,CV_GABOR_REAL);			
-			Mat coarse_responseImg(gbr_coarseScaleImage);
+			Mat coarse_responseImg = cvarrToMat(gbr_coarseScaleImage);
 
 			Mat coarseScaleImageUp;
-			resize(coarse_responseImg, coarseScaleImageUp, fineScaleImageSize, 0, 0, INTER_LINEAR);			
+			cv::resize(coarse_responseImg, coarseScaleImageUp, fineScaleImageSize, 0, 0, INTER_LINEAR);			
 
 			Mat temp = abs(src_responseImg -  coarseScaleImageUp);
 			Mat O_cs(temp.size(),CV_32F);
@@ -278,26 +279,26 @@ void saliencyMapItti::combineFeatureMaps(int scale)
 
 	for (int index=0; index<3*2; index++)
 	{
-		resize(featureMaps_I.at(index), featureMap_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
+		cv::resize(featureMaps_I.at(index), featureMap_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
 		mapNormalization(&featureMap_scaled);
 		conspicuityMap_I = conspicuityMap_I + featureMap_scaled;
 
-		resize(featureMaps_RG.at(index), RG_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
-		resize(featureMaps_BY.at(index), BY_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
+		cv::resize(featureMaps_RG.at(index), RG_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
+		cv::resize(featureMaps_BY.at(index), BY_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
 		mapNormalization(&RG_scaled);
 		mapNormalization(&BY_scaled);
 		conspicuityMap_C = conspicuityMap_C + (RG_scaled + BY_scaled);
 			
-		resize(featureMaps_0.at(index), featureMap_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
+		cv::resize(featureMaps_0.at(index), featureMap_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
 		mapNormalization(&featureMap_scaled);
 		ori_0 = ori_0 + featureMap_scaled;
-		resize(featureMaps_45.at(index), featureMap_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
+		cv::resize(featureMaps_45.at(index), featureMap_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
 		mapNormalization(&featureMap_scaled);
 		ori_45 = ori_45 + featureMap_scaled;	
-		resize(featureMaps_90.at(index), featureMap_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
+		cv::resize(featureMaps_90.at(index), featureMap_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
 		mapNormalization(&featureMap_scaled);
 		ori_90 = ori_90 + featureMap_scaled;
-		resize(featureMaps_135.at(index), featureMap_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
+		cv::resize(featureMaps_135.at(index), featureMap_scaled, scaleImageSize, 0, 0, INTER_LINEAR);
 		mapNormalization(&featureMap_scaled);
 		ori_135 = ori_135 + featureMap_scaled;	
 	}

@@ -34,7 +34,7 @@ cvReleaseMat( &Imag );
 
 
 /*!
-    \fn CvGabor::CvGabor(int iMu, int iNu)
+    fn CvGabor::CvGabor(int iMu, int iNu)
 Construct a gabor
 
 Parameters:
@@ -57,7 +57,7 @@ Create a gabor with a orientation iMu*PI/8, and with a scale iNu. The sigma (Sig
 }
 
 /*!
-    \fn CvGabor::CvGabor(int iMu, int iNu, double dSigma)
+    fn CvGabor::CvGabor(int iMu, int iNu, double dSigma)
 Construct a gabor
 
 Parameters:
@@ -78,7 +78,7 @@ CvGabor::CvGabor(int iMu, int iNu, float dSigma)
 
 
 /*!
-    \fn CvGabor::CvGabor(int iMu, int iNu, double dSigma, double dF)
+    fn CvGabor::CvGabor(int iMu, int iNu, double dSigma, double dF)
 Construct a gabor
 
 Parameters:
@@ -101,7 +101,7 @@ Create a gabor with a orientation iMu*PI/8, a scale iNu, a sigma value dSigma, a
 
 
 /*!
-    \fn CvGabor::CvGabor(double dPhi, int iNu)
+    fn CvGabor::CvGabor(double dPhi, int iNu)
 Construct a gabor
 
 Parameters:
@@ -123,7 +123,7 @@ Create a gabor with a orientation dPhi, and with a scale iNu. The sigma (Sigma) 
 
 
 /*!
-    \fn CvGabor::CvGabor(double dPhi, int iNu, double dSigma)
+    fn CvGabor::CvGabor(double dPhi, int iNu, double dSigma)
 Construct a gabor
 
 Parameters:
@@ -145,7 +145,7 @@ Create a gabor with a orientation dPhi, a scale iNu, and a sigma value dSigma. T
 
 
 /*!
-    \fn CvGabor::CvGabor(double dPhi, int iNu, double dSigma, double dF)
+    fn CvGabor::CvGabor(double dPhi, int iNu, double dSigma, double dF)
 Construct a gabor
 
 Parameters:
@@ -166,7 +166,7 @@ Create a gabor with a orientation dPhi, a scale iNu, a sigma value dSigma, and a
 }
 
 /*!
-    \fn CvGabor::IsInit()
+    fn CvGabor::IsInit()
 Determine the gabor is initilised or not
 
 Parameters:
@@ -184,7 +184,7 @@ bool CvGabor::IsInit()
 }
 
 /*!
-    \fn CvGabor::mask_width()
+    fn CvGabor::mask_width()
 Give out the width of the mask
 
 Parameters:

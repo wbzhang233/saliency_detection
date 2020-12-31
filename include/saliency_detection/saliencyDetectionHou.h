@@ -19,8 +19,9 @@
 #include <geometry_msgs/Point.h>
 
 // OpenCV
-#include "cv.h"
-#include "opencv2/highgui/highgui.hpp"
+#include <cv.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 using namespace cv;
 using namespace std;
@@ -38,7 +39,9 @@ protected:
 public:
     	saliencyMapHou() : nh_("~"), it_(nh_)
     	{
-    		image_sub_ = it_.subscribe("/rgbimage_in", 1, &saliencyMapHou::imageCB, this);
+			// TODO:从参数服务器加载图像消息话题
+			image_sub_topic = nh_.param<string>("image_sub_topic","/image_pub/rgb/image");
+    		image_sub_ = it_.subscribe(image_sub_topic, 1, &saliencyMapHou::imageCB, this);
     		saliencymap_pub_= it_.advertise("/saliency/image", 1);
     		point_pub_ = nh_.advertise<geometry_msgs::Point>("/saliency/salientpoint", 1);
     	}
@@ -51,5 +54,8 @@ public:
 
     	void imageCB(const sensor_msgs::ImageConstPtr& msg_ptr);
     	void calculateSaliencyMap(const Mat* src, Mat* dst);
+
+		string image_sub_topic; //订阅的话题
+
 };
 #endif
